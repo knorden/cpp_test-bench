@@ -1,6 +1,9 @@
 #ifndef UNITTEST_HPP
 #define UNITTEST_HPP
 
+/* Local Headers */
+#include "avl.hpp"
+
 /* NECCESSARY STL */
 #include <iostream>
 
