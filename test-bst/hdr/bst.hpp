@@ -34,10 +34,10 @@ private:
   BinNode<T> *_root;
 
   // HIDDEN OPERATORS ON THE TREE:
-  void _destruct(BinNode<T> *r) {
+  void _destructFrom(BinNode<T> *r) {
     if (r) {
-      _destruct(r->left);
-      _destruct(r->right);
+      _destructFrom(r->left);
+      _destructFrom(r->right);
       delete r;
     }
   }
@@ -81,7 +81,7 @@ public:
       this->insert(val);
     }
   }
-  ~BST() { _destruct(this->_root); }
+  ~BST() { _destructFrom(this->_root); }
 
   // INTERFACES FOR OPERATIONS ON THE TREE:
   void insert(const T &val) {

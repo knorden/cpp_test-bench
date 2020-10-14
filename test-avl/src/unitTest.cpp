@@ -14,7 +14,17 @@ bool unitTestFunc() {
   }();
   errCatch(allPassed, thisTest);
 
-  /* TEST: */
+  /* TEST: CREATE A NODE */
+  thisTest = "Construct a Node";
+  AvlNode<int> nd{30};
+  allPassed = [&]() {
+    if (nd.data != NULL) {
+      std::cout << "node->data=" << nd.data << std::endl;
+      return true;
+    } else
+      return false;
+  }();
+  errCatch(allPassed, thisTest);
 
   /* TEST: */
 
