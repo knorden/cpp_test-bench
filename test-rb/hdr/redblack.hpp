@@ -8,14 +8,15 @@
 enum COLOR { RED = 0, BLACK = 1 };
 
 /* Red-Black Node Template */
-template <typename T> class RbNode {
-private:
-public:
-  /* Fundamental Properties: */
+template <typename T>
+class RbNode {
+ private:
+ public:
+  /* NODE FUNDAMENTALS: */
   T data;
-  RbNode *parent;
-  RbNode *left;
-  RbNode *right;
+  RbNode* parent;
+  RbNode* left;
+  RbNode* right;
   enum COLOR isColor;
 
   /* Constructor and Destructor: */
@@ -28,23 +29,24 @@ public:
 };
 
 /* RB Tree Template */
-template <typename T> class RBT {
-private:
-  /* TREE FUNDAMENTAL PROPERTIES: */
-  RbNode<T> *_root;
+template <typename T>
+class RBT {
+ private:
+  /* TREE FUNDAMENTALS: */
+  RbNode<T>* _root;
 
   /* HIDDEN OPERATORS ON THE TREE NODES: */
   /* Get the parent node: */
-  RbNode<T> *&_getParent(RbNode<T> *&n) {
+  RbNode<T>*& _getParent(RbNode<T>*& n) {
     return n == nullptr ? nullptr : n->parent;
   }
   /* Get the Grand-parent node: */
-  RbNode<T> *&_getGrandParent(RbNode<T> *&n) {
+  RbNode<T>*& _getGrandParent(RbNode<T>*& n) {
     return _getParent(_getParent(n));
   }
   /* Get this node's siblings: */
-  RbNode<T> *&_getSibling(RbNode<T> *&n) {
-    RbNode<T> *p = _getParent(n);
+  RbNode<T>*& _getSibling(RbNode<T>*& n) {
+    RbNode<T>* p = _getParent(n);
 
     if (!p) return nullptr;
     if (n == p->left)
@@ -53,13 +55,56 @@ private:
       return p->left;
   }
   /* Get the siblings of this node's parent: */
-  RbNode<T> *&_getUncle(RbNode<T> *&n) {
-    RbNode<T> *p = _getParent(n);
+  RbNode<T>*& _getUncle(RbNode<T>*& n) {
+    RbNode<T>* p = _getParent(n);
     return _getSibling(p);
   }
 
+  /* TREE BALANCING: */
+  void _rotateLeft(RbNode<T>*& n) {
+    RbNode<T>* new_n = n->right;
+    RbNode<T>* p = _getParent(n);
+    static_assert(!new_n);
+
+    n->right = new_n->left;
+    new_n->left = n;
+    n->parent = new_n;
+
+    if (!n->right) n->right->parent = n;
+
+    if (!p) {
+      if (n == p->left)
+        p->left = new_n;
+      else if (n == p->right)
+        p->right = new_n;
+    }
+
+    new_n->parent = p;
+  }
+
+  void _rotateRight(RbNode<T>*& n) {
+    RbNode<T>* new_n = n->left;
+    RbNode<T>* p = _getParent(n);
+    static_assert(!new_n);
+
+    n->left = new_n->right;
+    new_n->right = n;
+    n->parent = new_n;
+
+    if (!n->left) n->left->parent = n;
+
+    if (!p) {
+      if (n == p->left)
+        p->left = new_n;
+      else if (n == p->right)
+        p->right = new_n;
+    }
+    
+    new_n->parent = p;
+  }
+
   /* Destruct a tree/branch from the passed node */
-  void _destructFrom(RbNode<T> *&r) {
+  void _destructFrom(RbNode<T>*& r) {
     if (r) {
       _destructFrom(r->left);
       _destructFrom(r->right);
@@ -67,28 +112,28 @@ private:
     }
   }
   /* Insert a node */
-  void _insert(RbNode<T> *&preds, T val) {
-    if (!preds) {
-      preds = new RbNode<T>{val};
-      preds->color = (preds->parent->color == RED) ? BLACK : RED;
+  void _insert(RbNode<T>*& n, T val) {
+    if (!n) {
+      n = new RbNode<T>{val};
+      n->color = (n->parent->color == RED) ? BLACK : RED;
     } else {
-      if (preds->data > val) {
-        _insert(preds->left, val);
-      } else if (preds->data < val) {
-        _insert(preds->right, val);
-      } else
+      if (n->data > val)
+        _insert(n->left, val);
+      else if (n->data < val)
+        _insert(n->right, val);
+      else
         return;
     }
   }
   /* Print out elements In-Order */
-  void _printIN(RbNode<T> *&parent, std::ostream &os) {
-    if (!parent) return;
-    _printIN(parent->left, os);
-    os << parent->data << ' ';
-    _printIN(parent->right, os);
+  void _printIN(RbNode<T>*& n, std::ostream& os) {
+    if (!n) return;
+    _printIN(n->left, os);
+    os << n->data << ' ';
+    _printIN(n->right, os);
   }
 
-public:
+ public:
   // CONSTRUCTORS & DESTRUCTOR:
   RBT() : _root{nullptr} { _root->color = BLACK; }
   ~RBT() { _destructFrom(this->_root); }
@@ -97,7 +142,7 @@ public:
   /* Insert a new node: */
   void insert(T val) { _insert(this->_root, val); }
   /* Print the tree In-Order: */
-  std::ostream &printInOrder(std::ostream &os = std::cout) {
+  std::ostream& printInOrder(std::ostream& os = std::cout) {
     _printIN(this->_root, os);
     return os;
   }
