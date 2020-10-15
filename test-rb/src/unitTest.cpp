@@ -1,12 +1,15 @@
 #include "unitTest.hpp"
 
 bool unitTestFunc() {
+
   /* DECLARE A PASSMARK FLAG */
   static bool allPassed = true;
   static std::string thisTest = "";
 
   /* INIT TEST: OUTPUT STRING */
   thisTest = "INIT OUTPUT";
+  std::cout << "\n\n";
+  std::cout << "TEST #0: " << thisTest << "\n\t";
   allPassed = []() {
     std::string tString = "THIS IS A TEST STRING.";
     std::cout << tString << std::endl;
@@ -20,15 +23,18 @@ bool unitTestFunc() {
   std::cout << "TEST #1: " << thisTest << "\n\t";
   RbNode<int> nodeA{5};
   allPassed = [&]() {
-    if (nodeA.data != NULL) {
+    if (&nodeA.data != nullptr) {
       std::cout << "nodeA->data=" << nodeA.data << std::endl;
       return true;
-    }
-    else return false;
+    } else
+      return false;
   }();
   errCatch(allPassed, thisTest);
 
-  /* TEST: */
+  /* TEST: CONSTRUCT A RB TREE */
+  thisTest = "CONSTRUCT A RB TREE";
+  std::cout << "\n\n";
+  std::cout << "TEST #2: " << thisTest << "\n\t";
 
   return allPassed;
 }

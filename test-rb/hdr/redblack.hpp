@@ -4,17 +4,21 @@
 #include <initializer_list>
 #include <iostream>
 
+/* COLORING FOR THE TREE */
 enum COLOR { RED = 0, BLACK = 1 };
 
+/* Red-Black Node Template */
 template <typename T> class RbNode {
 private:
 public:
+  /* Fundamental Properties: */
   T data;
   RbNode *parent;
   RbNode *left;
   RbNode *right;
   enum COLOR isColor;
 
+  /* Constructor and Destructor: */
   RbNode(T dt) : data{dt}, left{nullptr}, right{nullptr} {}
   ~RbNode() {
     left = nullptr;
@@ -23,15 +27,24 @@ public:
   }
 };
 
+/* RB Tree Template */
 template <typename T> class RBT {
 private:
+  /* TREE FUNDAMENTAL PROPERTIES: */
   RbNode<T> *_root;
 
-  // HIDDEN OPERATORS ON THE TREE:
-  RbNode *&_getParent(RbNode *&n) { return n == nullptr ? nullptr : n->parent; }
-  RbNode *&_getGrandParent(RbNode *&n) { return _getParent(_getParent(n)); }
-  RbNode *&_getSibling(RbNode *&n) {
-    RbNode *p = _getParent(n);
+  /* HIDDEN OPERATORS ON THE TREE NODES: */
+  /* Get the parent node: */
+  RbNode<T> *&_getParent(RbNode<T> *&n) {
+    return n == nullptr ? nullptr : n->parent;
+  }
+  /* Get the Grand-parent node: */
+  RbNode<T> *&_getGrandParent(RbNode<T> *&n) {
+    return _getParent(_getParent(n));
+  }
+  /* Get this node's siblings: */
+  RbNode<T> *&_getSibling(RbNode<T> *&n) {
+    RbNode<T> *p = _getParent(n);
 
     if (!p) return nullptr;
     if (n == p->left)
@@ -39,9 +52,9 @@ private:
     else
       return p->left;
   }
-
-  RbNode *&_getUncle(RbNode *&n) {
-    RbNode *p = _getParent(n);
+  /* Get the siblings of this node's parent: */
+  RbNode<T> *&_getUncle(RbNode<T> *&n) {
+    RbNode<T> *p = _getParent(n);
     return _getSibling(p);
   }
 
@@ -81,8 +94,9 @@ public:
   ~RBT() { _destructFrom(this->_root); }
 
   // PUBLIC INTERFACE FOR OPERATIONS ON THE TREE:
+  /* Insert a new node: */
   void insert(T val) { _insert(this->_root, val); }
-
+  /* Print the tree In-Order: */
   std::ostream &printInOrder(std::ostream &os = std::cout) {
     _printIN(this->_root, os);
     return os;
