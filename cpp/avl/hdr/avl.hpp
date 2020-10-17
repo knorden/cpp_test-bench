@@ -53,9 +53,7 @@ class AVL {
         _insert(r->left, val);
       else if (val > *r->data)
         _insert(r->right, val);
-      else
-        // ;
-        return false;  // will need flag suppression once tested.
+      return false;  // will need flag suppression once tested.
     }
   }
 

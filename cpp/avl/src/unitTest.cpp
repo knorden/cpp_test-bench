@@ -11,14 +11,14 @@ bool unitTestFunc() {
   std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
   std::cout << "---------------------------------------------------\n";
   allPassed = []() {
-    std::string tString = "THIS IS A TEST STRING.";
+    std::string tString = "\tTHIS IS A TEST STRING.";
     std::cout << tString << std::endl;
     return true;
   }();
   errCatch(allPassed, thisTest);
 
   /* TEST: CREATE A NODE */
-  thisTest = "Construct a new Node of value 30";
+  thisTest = "Construct Node from value 30";
   ++testNum;
   std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
   std::cout << "---------------------------------------------------\n";
@@ -34,7 +34,7 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /* TEST: CONSTRUCT A LIST */
-  thisTest = "Construct a new Tree from list: {30, 10, 5, 12, 7, 8}";
+  thisTest = "Construct Tree from list {30, 10, 5, 12, 7, 8}";
   ++testNum;
   std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
   std::cout << "---------------------------------------------------\n";
