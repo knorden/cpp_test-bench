@@ -44,6 +44,13 @@ class AVL {
       return false;  // might need flag suppression once tested.
   }
 
+
+  // ROTATING & UPDATING NODES:
+  void _rotateRight(AvlNode<T> *& r) {
+    
+
+  }
+
   bool _insert(AvlNode<T>*& r, const T& val) {
     if (!r) {
       r = new AvlNode{val};
@@ -57,6 +64,7 @@ class AVL {
     }
   }
 
+
   void _printIN(AvlNode<T>*& r, std::ostream& os) {
     if (!r) return;
     _printIN(r->left, os);
@@ -65,7 +73,7 @@ class AVL {
   }
 
  public:
-  /*********************************PUBLIC*********************************/
+  /*********************************PUBLIC API*********************************/
   // CONSTRUCTORS & DESTRUCTOR:
   AVL() : _root{nullptr} {}
   AVL(std::initializer_list<T>& list) : _root{nullptr} {

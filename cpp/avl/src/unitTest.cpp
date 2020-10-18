@@ -43,8 +43,6 @@ bool unitTestFunc() {
   treeA.printOrder_In();
   errCatch(allPassed = true, thisTest);
 
-  
-
   return allPassed;
 }
 
