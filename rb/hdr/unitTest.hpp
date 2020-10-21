@@ -2,7 +2,8 @@
 #define UNITTEST_HPP
 
 /* Local Headers */
-#include "redblack.hpp"
+// #include "redblack.hpp"
+#include "myrb.hpp"
 
 /* NECCESSARY STL */
 #include <iostream>

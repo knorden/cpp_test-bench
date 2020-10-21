@@ -1,7 +1,6 @@
 #include "unitTest.hpp"
 
 bool unitTestFunc() {
-
   /* DECLARE A PASSMARK FLAG */
   static bool allPassed = true;
   static std::string thisTest = "";
@@ -9,9 +8,9 @@ bool unitTestFunc() {
   /* INIT TEST: OUTPUT STRING */
   thisTest = "INIT OUTPUT";
   std::cout << "\n\n";
-  std::cout << "TEST #0: " << thisTest << "\n\t";
+  std::cout << "TEST #0: " << thisTest << "\n";
   allPassed = []() {
-    std::string tString = "THIS IS A TEST STRING.";
+    std::string tString = "\tTHIS IS A TEST STRING.";
     std::cout << tString << std::endl;
     return true;
   }();
@@ -20,18 +19,31 @@ bool unitTestFunc() {
   /* TEST: CONSTRUCT A RbNode */
   thisTest = "CONSTRUCT A RbNode{5}";
   std::cout << "\n\n";
-  std::cout << "TEST #1: " << thisTest << "\n\t";
-  RbNode<int> nodeA{5};
+  std::cout << "TEST #1: " << thisTest << "\n";
+  int init_val = 5;
+  RbNode<int> nodeA{init_val};
   allPassed = [&]() {
-    if (&nodeA.data != nullptr) {
-      std::cout << "nodeA->data=" << nodeA.data << std::endl;
-      return true;
-    } else
-      return false;
+    allPassed = (nodeA.getColor() == BLACK) ? true : false;
+    std::cout << "\tDEFAULT BLACK = 1, COLOR: " << nodeA.getColor()
+              << std::endl;
+    allPassed = (nodeA.getData() == 5) ? true : false;
+    std::cout << "\tCorrect Init:" << init_val
+              << ", returned=" << nodeA.getData() << std::endl;
+    return allPassed;
   }();
   errCatch(allPassed, thisTest);
 
-  /* TEST: CONSTRUCT A RB TREE */
+  /* TEST: CONSTRUCT A RbT */
+  thisTest = "CONSTRUCT A RB TREE";
+  std::cout << "\n\n";
+  std::cout << "TEST #2: " << thisTest << "\n\t";
+
+  /* TEST: */
+  thisTest = "CONSTRUCT A RB TREE";
+  std::cout << "\n\n";
+  std::cout << "TEST #2: " << thisTest << "\n\t";
+
+  /* TEST: */
   thisTest = "CONSTRUCT A RB TREE";
   std::cout << "\n\n";
   std::cout << "TEST #2: " << thisTest << "\n\t";
