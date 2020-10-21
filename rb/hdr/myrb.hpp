@@ -17,6 +17,7 @@ class RbNode {
 
  public:
   /***************************PUBLIC API***************************/
+  // Constructor & Destructor:
   RbNode(T dt)
       : data{new T{dt}}, left{nullptr}, right{nullptr}, parent{nullptr} {}
   ~RbNode() {
@@ -25,13 +26,13 @@ class RbNode {
     right = nullptr;
     parent = nullptr;
   }
-
+  // Getters:
   T& getData() { return *this->data; }
   RbNode*& getLeft() { return this->left; }
   RbNode*& getRight() { return this->right; }
   RbNode*& getParent() { return this->parent; }
   Color getColor() { return this->color; }
-
+  // Setters:
   void setData(T dt) { this->data = new T{dt}; }
   RbNode*& setLeft(RbNode*& n) { return this->left = n; }
   RbNode*& setRight(RbNode*& n) { return this->right = n; }
@@ -45,7 +46,9 @@ class RbT {
   /*****************************PRIVATE****************************/
   RbNode<T>* _root;
 
-  // destroy the branch starting from the supplied node:
+  // Destruct the subtree, starting from the supplied node:
+  // NOTE: Might be more time/space efficient if use a loop for large trees:
+  bool _isEmptyTree() { return (!_root) ? true : false; }
   void _destructFrom(RbNode<T>*& r) {
     if (r) {
       _destructFrom(r->left);
@@ -54,9 +57,35 @@ class RbT {
     }
   }
 
+  void _rotateLeft(RbNode<T>*& n) {}
+  void _rotateRight(RbNode<T>*& n) {}
+
+  void _insert(RbNode<T>*& n, T val) {
+    if (!n) {
+      n = new RbNode<T>{val};
+      if (n->getParent()->getColor() == RED) {
+        n->setColor(BLACK);
+      } else {
+        n->setColor(RED);
+      }
+    } else {
+      if (n->getData() > val) {
+        _insert(n->getLeft(), val);
+      } else if (n->getData() < val) {
+        _insert(n->getRight(), val);
+      } else
+        return;
+    }
+  }
+
  public:
   /***************************PUBLIC API***************************/
+  // Constructor & Destructor:
   RbT() : _root{nullptr} {}
+  ~RbT() { _destructFrom(_root); }
+
+  // Operations on the tree:
+  bool isEmptyTree() { return _isEmptyTree(); }
 };
 
 #endif
