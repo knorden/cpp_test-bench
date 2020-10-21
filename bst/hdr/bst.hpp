@@ -8,6 +8,7 @@ class BinNode {
  public:
   // FUNDAMENTAL NODE PROPERTIES:
   T data;
+  int height;
   BinNode* left;
   BinNode* right;
 
