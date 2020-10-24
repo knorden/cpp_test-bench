@@ -40,12 +40,16 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   // TEST_ID: 02
-  thisTest = "Construct AVLT, {}";
+  thisTest = "Construct AVLT, {30, 10, 5, 12, 7, 8}";
   ++testNum;
   std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
   std::cout << "--------------------------------------------------------\n";
   /* TEST_BODY STARTS BEOW */
-
+  std::initializer_list<int> testList = {30, 10, 5, 12, 7, 8};
+  AVLT<int> treeA{testList};
+  treeA.printOrder_In();
+  errCatch(allPassed = true, thisTest);
+  
   return allPassed;
 }
 
