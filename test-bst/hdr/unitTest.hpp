@@ -1,12 +1,10 @@
 #ifndef UNITTEST_HPP
 #define UNITTEST_HPP
 
-/* Local Headers */
-// #include "avl.hpp"
-#include "myavl.hpp"
-
 /* NECCESSARY STL */
+#include <cmath>
 #include <iostream>
+#include "bst.hpp"
 
 /* UNIT TEST FUNCTION */
 bool unitTestFunc();

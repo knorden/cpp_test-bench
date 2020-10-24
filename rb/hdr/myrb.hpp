@@ -18,7 +18,7 @@ class RbNode {
  public:
   /***************************PUBLIC API***************************/
   // Constructor & Destructor:
-  RbNode(T dt)
+  RbNode(const T& dt)
       : data{new T{dt}}, left{nullptr}, right{nullptr}, parent{nullptr} {}
   ~RbNode() {
     delete data;

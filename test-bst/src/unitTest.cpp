@@ -1,38 +1,43 @@
 #include "unitTest.hpp"
 
 bool unitTestFunc() {
-  /* DECLARE A PASSMARK FLAG */
+  /* Declare parameters for Passmark Flag & Test IDs */
   static bool allPassed = true;
   static std::string thisTest = "";
-  int testNum = 0;
+  static int testNum = 0;
 
   /* INIT TEST: OUTPUT STRING */
   thisTest = "INIT OUTPUT";
   std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
   std::cout << "---------------------------------------------------\n";
   allPassed = []() {
-    std::string tString = "\tTHIS IS A TEST STRING.";
+    std::string tString = "THIS IS A TEST STRING.";
     std::cout << tString << std::endl;
     return true;
   }();
   errCatch(allPassed, thisTest);
 
-  /* TEST: CREATE A NODE */
-  thisTest = "Construct AvlNode, value 30";
+  /* TEST: */
+  thisTest = "";
   ++testNum;
   std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
   std::cout << "---------------------------------------------------\n";
-  AvlNode<int> nd{30};
-  allPassed = [&]() {
-    if (nd.getData()) {
-      std::cout << "\t&node->data=" << &nd.getData() << std::endl;
-      std::cout << "\tnode->data=" << nd.getData() << std::endl;
-      return true;
-    } else
-      return false;
-  }();
-  errCatch(allPassed, thisTest);
-
+  BSTNode *root = nullptr;
+  root->insert(root, 3);
+  root->insert(root, 5);
+  root->insert(root, 7);
+  root->insert(root, 1);
+  root->insert(root, 2);
+  root->insert(root, 9);
+  
+  /* TEST: */
+  thisTest = "";
+  ++testNum;
+  std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
+  std::cout << "---------------------------------------------------\n";
+  bool isB = true;
+  isB = root->isBalanced(root, isB);
+  std::cout << isB;
   return allPassed;
 }
 

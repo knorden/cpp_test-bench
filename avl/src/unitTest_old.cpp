@@ -18,20 +18,30 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /* TEST: CREATE A NODE */
-  thisTest = "Construct AvlNode, value 30";
+  thisTest = "Construct Node from value 30";
   ++testNum;
   std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
   std::cout << "---------------------------------------------------\n";
   AvlNode<int> nd{30};
   allPassed = [&]() {
-    if (nd.getData()) {
-      std::cout << "\t&node->data=" << &nd.getData() << std::endl;
-      std::cout << "\tnode->data=" << nd.getData() << std::endl;
+    if (nd.data != nullptr) {
+      std::cout << "\t&node->data=" << nd.data << std::endl;
+      std::cout << "\tnode->data=" << *nd.data << std::endl;
       return true;
     } else
       return false;
   }();
   errCatch(allPassed, thisTest);
+
+  /* TEST: CONSTRUCT A LIST */
+  thisTest = "Construct Tree from list {30, 10, 5, 12, 7, 8}";
+  ++testNum;
+  std::cout << "\n\nTEST #" << testNum << ": " + thisTest << std::endl;
+  std::cout << "---------------------------------------------------\n";
+  std::initializer_list<int> list = {30, 10, 5, 12, 7, 8};
+  AVL<int> treeA{list};
+  treeA.printOrder_In();
+  errCatch(allPassed = true, thisTest);
 
   return allPassed;
 }
