@@ -28,11 +28,11 @@ bool unitTestFunc() {
   allPassed = [&]() {
     if (node_A.getData()) {
       std::cout << "node_A->data=" << node_A.getData() << std::endl;
-      std::cout << "node_A->height=" << node_A.getHeight() << std::endl;
+      std::cout << "node_A->height=" << node_A.get_Hyt() << std::endl;
       std::cout << "\nvalue of nullptr: " << static_cast<void*>(nullptr)
                 << std::endl;
-      std::cout << "\tnode_A->left=" << node_A.getLeft() << std::endl;
-      std::cout << "\tnode_A->right=" << node_A.getRight() << std::endl;
+      std::cout << "\tnode_A->left=" << node_A.GetL() << std::endl;
+      std::cout << "\tnode_A->right=" << node_A.GetR() << std::endl;
       return true;
     } else
       return false;
@@ -49,7 +49,7 @@ bool unitTestFunc() {
   AVLT<int> treeA{testList};
   treeA.printOrder_In();
   errCatch(allPassed = true, thisTest);
-  
+
   return allPassed;
 }
 

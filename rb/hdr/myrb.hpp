@@ -28,10 +28,10 @@ class RbNode {
   }
   // Getters:
   T& getData() { return *this->data; }
-  RbNode*& getLeft() { return this->left; }
-  RbNode*& getRight() { return this->right; }
-  RbNode*& getParent() { return this->parent; }
-  Color getColor() { return this->color; }
+  RbNode*& GetL() { return this->left; }
+  RbNode*& GetR() { return this->right; }
+  RbNode*& GetP() { return this->parent; }
+  Color GetColor() { return this->color; }
   // Setters:
   void setData(T dt) { this->data = new T{dt}; }
   RbNode*& setLeft(RbNode*& n) { return this->left = n; }
@@ -63,16 +63,16 @@ class RbT {
   void _insert(RbNode<T>*& n, T val) {
     if (!n) {
       n = new RbNode<T>{val};
-      if (n->getParent()->getColor() == RED) {
+      if (n->GetP()->GetColor() == RED) {
         n->setColor(BLACK);
       } else {
         n->setColor(RED);
       }
     } else {
       if (n->getData() > val) {
-        _insert(n->getLeft(), val);
+        _insert(n->GetL(), val);
       } else if (n->getData() < val) {
-        _insert(n->getRight(), val);
+        _insert(n->GetR(), val);
       } else
         return;
     }
