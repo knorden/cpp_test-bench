@@ -15,8 +15,8 @@ class Test {
   Test() : id{-1}, Name{""} {}
 };
 
-/* Unit-Test Utility Functions */
 bool unitTestFunc();
+/* Unit-Test Utility Functions */
 void pfCheck(bool, Test& test);
 void errCatch(bool, Test& test);
 void TestHeader(Test& test);

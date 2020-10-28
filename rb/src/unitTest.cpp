@@ -69,19 +69,41 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /*******************************************************************************/
-  thisTest.Name = "DESTRUCT A TREE";
+  thisTest.Name = "UPDATING THE TREE";
   TestHeader(thisTest);
   /*******************************************************************************/
-  newTree.~RbT();
-  allPassed = [&]() {
-    if (!newTree.isEmptyTree()) {
-      std::cout << "Tree is empty." << std::endl;
-      return true;
-    } else {
-      std::cout << "Tree NOT empty." << std::endl;
-      return false;
-    }
-  }();
+
+  // /*******************************************************************************/
+  // thisTest.Name = "CLEAR A TREE";
+  // TestHeader(thisTest);
+  // /*******************************************************************************/
+  // newTree.clearTree();
+  // allPassed = [&]() {
+  //   if (!newTree.isEmptyTree()) {
+  //     std::cout << "Tree is empty." << std::endl;
+  //     return true;
+  //   } else {
+  //     std::cout << "Tree NOT empty." << std::endl;
+  //     return false;
+  //   }
+  // }();
+  // errCatch(allPassed, thisTest);
+
+  // /*******************************************************************************/
+  // thisTest.Name = "DESTRUCT A TREE";
+  // TestHeader(thisTest);
+  // /*******************************************************************************/
+  // newTree.~RbT();
+  // allPassed = [&]() {
+  //   if (!newTree.isEmptyTree()) {
+  //     std::cout << "Tree is empty." << std::endl;
+  //     return true;
+  //   } else {
+  //     std::cout << "Tree NOT empty." << std::endl;
+  //     return false;
+  //   }
+  // }();
+  // errCatch(allPassed, thisTest);
 
   return allPassed;
 }
