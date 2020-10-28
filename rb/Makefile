@@ -7,7 +7,7 @@ SDIR		:= src
 ODIR		:= obj
 
 EXET		:= a
-OBJS		:= main.o unitTest.o
+OBJS		:= main.o unitTest.o utilities.o
 
 OSRC		:= $(addprefix $(ODIR)/, $(OBJS))
 
