@@ -8,9 +8,9 @@
 /* NECCESSARY STL */
 #include <iostream>
 
-/* UNIT TEST FUNCTION */
+/* Unit-Test Utility Functions */
 bool unitTestFunc();
 void pfCheck(bool, std::string);
 void errCatch(bool, std::string);
-
+void TestHeader(int& test_id, std::string& testName);
 #endif
