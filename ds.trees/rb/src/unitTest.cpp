@@ -2,13 +2,12 @@
 
 bool unitTestFunc() {
   /* VARIABLE FOR UNIT TESTS: test-id, test-name, pass/fail-check */
-  static int test_id = -1;
-  static std::string thisTest = "";
+ static Test thisTest;
   static bool allPassed = true;
 
   /*******************************************************************************/
-  thisTest = "INIT OUTPUT";
-  TestHeader(++test_id, thisTest);
+  thisTest.Name = "INIT OUTPUT";
+  TestHeader(thisTest);
   /*******************************************************************************/
   allPassed = []() {
     std::string tString = "THIS IS A TEST STRING.";
@@ -18,8 +17,8 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /*******************************************************************************/
-  thisTest = "CONSTRUCT A RbNode{5}";
-  TestHeader(++test_id, thisTest);
+  thisTest.Name = "CONSTRUCT A RbNode{5}";
+  TestHeader(thisTest);
   /*******************************************************************************/
   int init_val = 5;
   RbNode<int> nodeA{init_val};
@@ -34,8 +33,8 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /*******************************************************************************/
-  thisTest = "MAKE TREE W/ {1, 6, 8, 13, 19, 5, 2, 7}";
-  TestHeader(++test_id, thisTest);
+  thisTest.Name = "MAKE TREE W/ {1, 6, 8, 13, 19, 5, 2, 7}";
+  TestHeader(thisTest);
   /*******************************************************************************/
   std::initializer_list<int> list = {1, 6, 8, 13, 19, 5, 2, 7};
   RbT<int> newTree{list};
@@ -43,8 +42,8 @@ bool unitTestFunc() {
   errCatch(allPassed = true, thisTest);
 
   /*******************************************************************************/
-  thisTest = "TRAVERSING & PRINTING IN ORDER";
-  TestHeader(++test_id, thisTest);
+  thisTest.Name = "TRAVERSING & PRINTING IN ORDER";
+  TestHeader(thisTest);
   /*******************************************************************************/
   newTree.print_InOrder();
   std::cout << '\n';
@@ -52,8 +51,8 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /*******************************************************************************/
-  thisTest = "TRAVERSING & PRINTING PRE ORDER";
-  TestHeader(++test_id, thisTest);
+  thisTest.Name = "TRAVERSING & PRINTING PRE ORDER";
+  TestHeader(thisTest);
   /*******************************************************************************/
   newTree.print_PreOrder();
   std::cout << '\n';
@@ -61,8 +60,8 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /*******************************************************************************/
-  thisTest = "TRAVERSING & PRINTING POST ORDER";
-  TestHeader(++test_id, thisTest);
+  thisTest.Name = "TRAVERSING & PRINTING POST ORDER";
+  TestHeader(thisTest);
   /*******************************************************************************/
   newTree.print_PostOrder();
   std::cout << '\n';
@@ -70,8 +69,8 @@ bool unitTestFunc() {
   errCatch(allPassed, thisTest);
 
   /*******************************************************************************/
-  thisTest = "DESTRUCT A TREE";
-  TestHeader(++test_id, thisTest);
+  thisTest.Name = "DESTRUCT A TREE";
+  TestHeader(thisTest);
   /*******************************************************************************/
   newTree.~RbT();
   allPassed = [&]() {
@@ -87,24 +86,26 @@ bool unitTestFunc() {
   return allPassed;
 }
 
-void pfCheck(bool check, std::string testName) {
-  std::cout << "\n\n>>>>> " << testName;
+void pfCheck(bool check, Test& test) {
+  std::cout << "\n\n>>>>> " << test.Name;
   if (check)
-    std::cout << "\nSTATUS: PASSED.\n";
+    std::cout << "\nSTATUS: PASSED." << std::endl;
   else
-    throw "\nERROR! FAILED PASSCHECK ON THIS TEST: " + testName;
+    throw "\nERROR! FAILED PASSCHECK ON TEST#" + std::to_string(test.id) +
+        ": " + test.Name;
 }
 
-void errCatch(bool check, std::string testName) {
+void errCatch(bool check, Test& test) {
   try {
-    pfCheck(check, testName);
+    pfCheck(check, test);
   } catch (std::string msg) {
     std::cout << msg << std::endl;
   }
 }
 
-void TestHeader(int& test_id, std::string& testName) {
-  std::cout << "\n\nTEST #" << test_id << ": " << testName;
+void TestHeader(Test& test) {
+  ++test.id;
+  std::cout << "\n\nTEST #" << test.id << ": " << test.Name;
   std::cout
       << "\n----------------------------------------------------------------"
       << std::endl;

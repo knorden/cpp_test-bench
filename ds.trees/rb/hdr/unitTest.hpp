@@ -8,9 +8,17 @@
 /* NECCESSARY STL */
 #include <iostream>
 
+class Test {
+ public:
+  int id;
+  std::string Name;
+  Test() : id{-1}, Name{""} {}
+};
+
 /* Unit-Test Utility Functions */
 bool unitTestFunc();
-void pfCheck(bool, std::string);
-void errCatch(bool, std::string);
-void TestHeader(int& test_id, std::string& testName);
+void pfCheck(bool, Test& test);
+void errCatch(bool, Test& test);
+void TestHeader(Test& test);
+
 #endif
