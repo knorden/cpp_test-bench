@@ -2,7 +2,7 @@
 
 bool unitTestFunc() {
   /* VARIABLE FOR UNIT TESTS: test-id, test-name, pass/fail-check */
- static Test thisTest;
+  static Test thisTest;
   static bool allPassed = true;
 
   /*******************************************************************************/

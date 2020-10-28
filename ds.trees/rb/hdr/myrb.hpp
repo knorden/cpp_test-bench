@@ -64,9 +64,6 @@ class RbT {
       return false;
   }
 
-  void _rotateLeft(RbNode<T>*& n) {}
-  void _rotateRight(RbNode<T>*& n) {}
-
   void _insertFrom(RbNode<T>*& n, T val) {
     if (!n) {
       n = new RbNode<T>{val};
@@ -84,27 +81,39 @@ class RbT {
         return;
     }
   }
+
+  void _rotateLeft(RbNode<T>*& n) {
+    if (!n) {
+    }
+  }
+  void _rotateRight(RbNode<T>*& n) {
+    if (!n) {
+    }
+  }
+
+  void _balance(RbNode<T>*& n) {
+    if (!n) {
+    }
+  }
+
   void _printIN(RbNode<T>*& n, std::ostream& os) {
     if (!n) return;
     _printIN(n->GetL(), os);
     os << n->getData() << ' ';
     _printIN(n->GetR(), os);
   }
-
   void _printPRE(RbNode<T>*& n, std::ostream& os) {
     if (!n) return;
     os << n->getData() << ' ';
     _printPRE(n->GetL(), os);
     _printPRE(n->GetR(), os);
   }
-
   void _printPOST(RbNode<T>*& n, std::ostream& os) {
     if (!n) return;
     _printPOST(n->GetL(), os);
     _printPOST(n->GetR(), os);
     os << n->getData() << ' ';
   }
-
   bool b_printIN(RbNode<T>*& n, std::ostream& os) {
     if (!n)
       return false;
@@ -115,7 +124,6 @@ class RbT {
       return true;
     }
   }
-
   bool b_printPRE(RbNode<T>*& n, std::ostream& os) {
     if (!n)
       return false;
@@ -126,7 +134,6 @@ class RbT {
       return true;
     }
   }
-
   bool b_printPOST(RbNode<T>*& n, std::ostream& os) {
     if (!n)
       return false;
