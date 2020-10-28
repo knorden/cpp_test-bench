@@ -104,3 +104,53 @@ std::string pairWithString(int n) {
                                                                   : "";
   return str;
 }
+
+void varArr() {
+  // Rewrite:
+  /*
+    first line is n q: n=number of rows, q= number of queries
+    The best way to think about this is problem is that it has 3 main steps:
+    step 1: get vector size and number of queries
+    step 2: construct the vector with variable-sized vector members
+    step 3: access random elements q times
+
+    First I got the input step done, cin read into n and q.
+    The next part is incomplete. Let's go back and examine it carefully.
+
+   */
+  int n = 0, q = 0, input = 0, size = 0;
+  // Step 1: Get n and q:
+  cin >> n >> q;
+
+  // Step 2: Construct the vector of vectors
+  vector<vector<int>> vec_Big;
+  vector<int>* vec_Small;
+  // Loop to construct the vector of vectors:
+  for (int i = 0; i < n; ++i) {
+    // from the first input, construct a new <int> vector of size=input
+    cin >> size;
+    vec_Small = new vector<int>;
+    // then add new elements to that <int>:
+    for (int j = 0; j < size; ++j) {
+      cin >> input;
+      vec_Small->push_back(input);
+    }
+
+    // then push *buff to vec_Big;
+    vec_Big.push_back(*vec_Small);
+    delete vec_Small;
+  }
+
+  // Loop to access random vector elements q times:
+  vec_Small = new vector<int>;
+  for (int i = 0; i < q; ++i) {
+    int r, c;
+    cin >> r >> c;
+    vec_Small->push_back(r);
+    vec_Small->push_back(c);
+  }
+
+  for (int i = 0; i < (q * 2); i += 2) {
+    cout << vec_Big[(*vec_Small)[i]][(*vec_Small)[i + 1]] << '\n';
+  }
+}

@@ -5,7 +5,6 @@
 #include "easy.hpp"
 
 // Tested functions
-void varArr();  // <-- this one is WIP
 
 /* FUNCTION: WRAPPER FOR UNIT TESTS */
 bool unitTestFunc();
