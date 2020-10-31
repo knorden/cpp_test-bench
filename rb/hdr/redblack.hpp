@@ -38,7 +38,7 @@ class RBT {
   /* HIDDEN OPERATORS ON THE TREE NODES: */
   /* Get the parent node: */
   RbNode<T>*& _getParent(RbNode<T>*& n) {
-    return n == nullptr ? nullptr : n->parent;
+    return (n == nullptr) ? nullptr : n->parent;
   }
   /* Get the Grand-parent node: */
   RbNode<T>*& _getGrandParent(RbNode<T>*& n) {
@@ -70,7 +70,7 @@ class RBT {
     new_n->left = n;
     n->parent = new_n;
 
-    if (!n->right) n->right->parent = n;
+    if (n->right) n->right->parent = n;
 
     if (!p) {
       if (n == p->left)
@@ -91,15 +91,15 @@ class RBT {
     new_n->right = n;
     n->parent = new_n;
 
-    if (!n->left) n->left->parent = n;
+    if (n->left) n->left->parent = n;
 
     if (!p) {
-      if (n == p->left)
-        p->left = new_n;
-      else if (n == p->right)
+      if (n == p->right)
         p->right = new_n;
+      else if (n == p->left)
+        p->left = new_n;
     }
-    
+
     new_n->parent = p;
   }
 

@@ -29,10 +29,10 @@ class RbNode {
   }
   // Getters:
   T& getData() { return *this->data; }
-  RbNode*& GetL() { return this->left; }
-  RbNode*& GetR() { return this->right; }
-  RbNode*& GetP() { return this->parent; }
-  int GetColor() { return this->color; }
+  RbNode*& getLeft() { return this->left; }
+  RbNode*& getRight() { return this->right; }
+  RbNode*& getParent() { return this->parent; }
+  int getColor() { return this->color; }
   // Setters:
   void setData(T dt) { this->data = new T{dt}; }
   RbNode*& setLeft(RbNode*& n) { return this->left = n; }
@@ -54,8 +54,8 @@ class RbT {
   // Destruct SubTree with root at given node:
   bool _destructFrom(RbNode<T>*& n) {
     if (n) {
-      _destructFrom(n->GetL());
-      _destructFrom(n->GetR());
+      _destructFrom(n->getLeft());
+      _destructFrom(n->getRight());
       delete n;
       return true;
     }
@@ -64,63 +64,183 @@ class RbT {
       return false;
   }
 
-  void _insertFrom(RbNode<T>*& n, T val) {
+  void _insert(RbNode<T>*& n, T val) {
     if (!n) {
       n = new RbNode<T>{val};
-      // if (n->GetP()->GetColor() == RED) {
-      //   n->setBlack();
-      // } else {
-      //   n->setRed();
-      // }
+      n->setColor((n->getParent()->getColor() == RED) ? BLACK : RED);
     } else {
-      if (n->getData() > val) {
-        _insertFrom(n->GetL(), val);
-      } else if (n->getData() < val) {
-        _insertFrom(n->GetR(), val);
-      } else
+      if (n->getData() > val)
+        _insert(n->getLeft(), val);
+      else if (n->getData() < val)
+        _insert(n->getRight(), val);
+      else
         return;
     }
   }
 
-  void _rotateLeft(RbNode<T>*& n) {
-    if (!n) {
-    }
+  RbNode<T>*& _getGrandParent(RbNode<T>*& n) {
+    return (n->getParent()->getParent());
   }
+
+  RbNode<T>* _getSibling(RbNode<T>*& n) {
+    RbNode<T>* p = n->getParent();
+    if (!p) return nullptr;
+    if (n == p->getLeft())
+      return p->getRight();
+    else
+      return p->getLeft();
+  }
+
+  RbNode<T>*& _getUncle(RbNode<T>*& n) {
+    RbNode<T>* p = n->getParent();
+    return _getSibling(p);
+  }
+
+  void _rotateLeft(RbNode<T>*& n) {
+    RbNode<T>* new_n = n->getRight();
+    RbNode<T>* p = n->getParent();
+
+    n->setRight(new_n->getLeft());
+    new_n->setLeft(n);
+    n->setParent(new_n);
+
+    if (n->getRight()) (n->getRight())->setParent(n);
+
+    if (!p) {
+      if (n == p->getLeft())
+        p->setLeft(new_n);
+      else if (n == p->getRight())
+        p->setRight(new_n);
+    }
+    new_n->setParent(p);
+  }
+
   void _rotateRight(RbNode<T>*& n) {
-    if (!n) {
+    RbNode<T>* new_n = n->getLeft();
+    RbNode<T>* p = n->getParent();
+
+    n->setLeft(new_n->getRight());
+    new_n->setRight(n);
+    n->setParent(new_n);
+
+    if (n->getLeft()) (n->getLeft())->setParent(n);
+
+    if (!p) {
+      if (n == p->getRight())
+        p->setRight(new_n);
+      else if (n == p->getRight())
+        p->setLeft(new_n);
+    }
+    new_n->setParent(p);
+  }
+
+  RbNode<T>*& _insertNode(RbNode<T>*& root, RbNode<T>*& new_node) {
+    // immediately create node if _Root is empty:
+    _insertInternally(root, new_node);
+    _repairInsert(new_node);
+
+    root = new_node;
+    while (root->getParent()) {
+      root = root->getParent();
+    }
+    return root;
+  }
+  void _insertInternally(RbNode<T>*& root, RbNode<T>*& n) {
+    if (!root) {
+      if (n->getData() < root->getData()) {
+        if (!root->getLeft()) {
+          _insertInternally(root->getLeft(), n);
+          return;
+        } else
+          root->setLeft(n);
+      } else {
+        if (!root->getRight()) {
+          _insertInternally(root->getRight(), n);
+          return;
+        } else
+          root->setRight(n);
+      }
+    }
+    n->setParent(root);
+    n->setLeft(nullptr);
+    n->setRight(nullptr);
+    n->setRed();
+  }
+
+  void _repairInsert(RbNode<T>*& n) {
+    if (!n->getParent()) {
+      // case1
+      _insCase1(n);
+    } else if (n->getParent()->getColor() == BLACK) {
+      // case2
+      _insCase2(n);
+    } else if (_getUncle(n) && _getUncle(n)->getColor() == RED) {
+      // case 3
+      _insCase3(n);
+    } else {
+      // case 4
+      _insCase4(n);
     }
   }
 
-  void _balance(RbNode<T>*& n) {
-    if (!n) {
+  void _insCase1(RbNode<T>*& n) { n->setBlack(); }
+  void _insCase2(RbNode<T>*& n) { return; }
+  void _insCase3(RbNode<T>*& n) {
+    n->getParent()->setColor(BLACK);
+    _getUncle(n)->set(BLACK);
+    _getGrandParent(n)->setColor(RED);
+    _repairInsert(_getGrandParent(n));
+  }
+  void _insCase4(RbNode<T>*& n) {
+    RbNode<T>* p = n->getParent();
+    RbNode<T>* g = p->getParent();
+
+    if (n == p->getRight() && p == g->getLeft()) {
+      _rotateLeft(p);
+      n = n->getLeft();
+    } else if (n == p->getLeft() && p == g->getRight()) {
+      _rotateRight(p);
+      n = n->getRight();
     }
+    _insCase4_CONTINUE(n);
+  }
+  void _insCase4_CONTINUE(RbNode<T>*& n) {
+    RbNode<T>* p = n->getParent();
+    RbNode<T>* g = p->getParent();
+
+    if (n == p->getLeft())
+      _rotateRight(g);
+    else
+      _rotateLeft(g);
+    p->setColor(BLACK);
+    g->setColor(RED);
   }
 
   void _printIN(RbNode<T>*& n, std::ostream& os) {
     if (!n) return;
-    _printIN(n->GetL(), os);
+    _printIN(n->getLeft(), os);
     os << n->getData() << ' ';
-    _printIN(n->GetR(), os);
+    _printIN(n->getRight(), os);
   }
   void _printPRE(RbNode<T>*& n, std::ostream& os) {
     if (!n) return;
     os << n->getData() << ' ';
-    _printPRE(n->GetL(), os);
-    _printPRE(n->GetR(), os);
+    _printPRE(n->getLeft(), os);
+    _printPRE(n->getRight(), os);
   }
   void _printPOST(RbNode<T>*& n, std::ostream& os) {
     if (!n) return;
-    _printPOST(n->GetL(), os);
-    _printPOST(n->GetR(), os);
+    _printPOST(n->getLeft(), os);
+    _printPOST(n->getRight(), os);
     os << n->getData() << ' ';
   }
   bool b_printIN(RbNode<T>*& n, std::ostream& os) {
     if (!n)
       return false;
     else {
-      b_printIN(n->GetL(), os);
+      b_printIN(n->getLeft(), os);
       os << n->getData() << ' ';
-      b_printIN(n->GetR(), os);
+      b_printIN(n->getRight(), os);
       return true;
     }
   }
@@ -129,8 +249,8 @@ class RbT {
       return false;
     else {
       os << n->getData() << ' ';
-      b_printPRE(n->GetL(), os);
-      b_printPRE(n->GetR(), os);
+      b_printPRE(n->getLeft(), os);
+      b_printPRE(n->getRight(), os);
       return true;
     }
   }
@@ -138,8 +258,8 @@ class RbT {
     if (!n)
       return false;
     else {
-      b_printPOST(n->GetL(), os);
-      b_printPOST(n->GetR(), os);
+      b_printPOST(n->getLeft(), os);
+      b_printPOST(n->getRight(), os);
       os << n->getData() << ' ';
       return true;
     }
@@ -152,7 +272,7 @@ class RbT {
   RbT(std::initializer_list<T>& list) {
     _Root = nullptr;
     for (auto i : list)
-      insert(i);
+      _insert(_Root, i);
   }
 
   ~RbT() { _destructFrom(_Root); }
@@ -160,17 +280,8 @@ class RbT {
   // Operations on the tree:
   bool isEmptyTree() { return _isEmptyAt(_Root); }  // validate the tree?
   bool clearTree() { return _destructFrom(_Root); }
-
-  void insert(T& val) {
-    // immediately create node if _Root is empty:
-    if (!_Root) {
-      _Root = new RbNode<T>{val};
-      _Root->setBlack();
-    }
-    // otherwise, start insertion from _Root:
-    else
-      _insertFrom(_Root, val);
-  }
+  RbNode<T>*& insertNode(RbNode<T>*& n) { _insertNode(n); }
+  RbNode<T>*& insertValue(T*& val) { _insertNode(new RbNode<T>{val}); }
   void print_InOrder(std::ostream& os = std::cout) { _printIN(_Root, os); }
   void print_PreOrder(std::ostream& os = std::cout) { _printPRE(_Root, os); }
   void print_PostOrder(std::ostream& os = std::cout) { _printPOST(_Root, os); }

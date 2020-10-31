@@ -23,8 +23,8 @@ bool unitTestFunc() {
   int init_val = 5;
   RbNode<int> nodeA{init_val};
   allPassed = [&]() {
-    allPassed = (nodeA.GetColor() == BLACK) ? true : false;
-    std::cout << "DEFAULT BLACK = 1, COLOR: " << nodeA.GetColor() << '\n';
+    allPassed = (nodeA.getColor() == BLACK) ? true : false;
+    std::cout << "DEFAULT BLACK = 1, COLOR: " << nodeA.getColor() << '\n';
     allPassed = (nodeA.getData() == 5) ? true : false;
     std::cout << "Correct Init:" << init_val
               << ", returned=" << nodeA.getData();
