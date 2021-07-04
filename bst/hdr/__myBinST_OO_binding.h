@@ -83,28 +83,28 @@ class BinST {
   bool _debug = false;
 
   /* Clone a passed in tree, returns pointer to new tree */
-  Node<T>* _hidden_cloneTree(Node<T>* node) {
+  Node<T>* h_cloneTree(Node<T>* node) {
     if (!node)
       return nullptr;
     else
-      return new Node<T>(node->value, _hidden_cloneTree(node->l),
-                         _hidden_cloneTree(node->r));
+      return new Node<T>(node->value, h_cloneTree(node->l),
+                         h_cloneTree(node->r));
   }
 
-  void _hidden_destroyBranch(Node<T>* b) {
+  void h_destroyBranch(Node<T>* b) {
     if (b) {
-      _hidden_destroyBranch(b->l);
-      _hidden_destroyBranch(b->r);
+      h_destroyBranch(b->l);
+      h_destroyBranch(b->r);
       delete b;
     }
   }
 
-  void _hidden_addNode(Node<T>* root, T val) {
+  void h_addNode(Node<T>* root, T val) {
     if (root->value > val) {
       if (!root->l) {
         root->l = new Node<T>(val);
       } else {
-        _hidden_addNode(root->l, val);
+        h_addNode(root->l, val);
       }
     }
 
@@ -112,36 +112,36 @@ class BinST {
       if (!root->r) {
         root->r = new Node<T>(val);
       } else {
-        _hidden_addNode(root->r, val);
+        h_addNode(root->r, val);
       }
     }
   }
 
-  void _hidden_printOrder_IN(Node<T>* root, std::ostream& output) {
+  void h_printOrder_IN(Node<T>* root, std::ostream& output) {
     if (!root)
       return;
-    _hidden_printOrder_IN(root->l, output);
+    h_printOrder_IN(root->l, output);
     output << root->value << ' ';
-    _hidden_printOrder_IN(root->r, output);
+    h_printOrder_IN(root->r, output);
   }
 
-  void _hidden_printOrder_POST(Node<T>* root, std::ostream& output) {
+  void h_printOrder_POST(Node<T>* root, std::ostream& output) {
     if (!root)
       return;
-    _hidden_printOrder_POST(root->l, output);
-    _hidden_printOrder_POST(root->r, output);
+    h_printOrder_POST(root->l, output);
+    h_printOrder_POST(root->r, output);
     output << root->val << ' ';
   }
 
-  void _hidden_printOrder_PRE(Node<T>* root, std::ostream& output) {
+  void h_printOrder_PRE(Node<T>* root, std::ostream& output) {
     if (!root)
       return;
     output << root->val << ' ';
-    _hidden_printOrder_PRE(root->l, output);
-    _hidden_printOrder_PRE(root->r, output);
+    h_printOrder_PRE(root->l, output);
+    h_printOrder_PRE(root->r, output);
   }
 
-  void _hidden_printOrder_LEVEL(Node<T>* root, std::ostream& output) {
+  void h_printOrder_LEVEL(Node<T>* root, std::ostream& output) {
     if (!root)
       return;
     std::queue<Node<T>*> q;
@@ -164,33 +164,33 @@ class BinST {
     }
   }
 
-  int _hidden_countNodes(Node<T>* root) {
+  int h_countNodes(Node<T>* root) {
     int n = 0;
     (!root) ? n = 0
-            : n = 1 + _hidden_countNodes(root->l) + _hidden_countNodes(root->r);
+            : n = 1 + h_countNodes(root->l) + h_countNodes(root->r);
     return n;
   }
 
-  int _hidden_getHeight(Node<T>* root) {
+  int h_getHeight(Node<T>* root) {
     int h = 0;
     (!root) ? h = -1
-            : h = 1 + std::max(_hidden_getHeight(root->l),
-                               _hidden_getHeight(root->r));
+            : h = 1 + std::max(h_getHeight(root->l),
+                               h_getHeight(root->r));
     return h;
   }
 
-  void _hidden_printLongestPath(Node<T>* root) {
+  void h_printLongestPath(Node<T>* root) {
     if (!root)
       return;
     std::cout << root->value << ' ';
-    if (_hidden_getHeight(root->l) > _hidden_getHeight(root->r)) {
-      _hidden_printLongestPath(root->l);
+    if (h_getHeight(root->l) > h_getHeight(root->r)) {
+      h_printLongestPath(root->l);
     } else {
-      _hidden_printLongestPath(root->r);
+      h_printLongestPath(root->r);
     }
   }
 
-  bool _hidden_deleteValue(Node<T>* predecessor, Node<T>* current, T val) {
+  bool h_deleteValue(Node<T>* predecessor, Node<T>* current, T val) {
     if (!current)
       return false;
     if (current->value == val) {
@@ -213,23 +213,23 @@ class BinST {
         T tempVal = current->value;
         current->value = valid->value;
         valid->value = tempVal;
-        return _hidden_deleteValue(current, current->r, tempVal);
+        return h_deleteValue(current, current->r, tempVal);
       }
       delete current;
       return true;
     }
-    return _hidden_deleteValue(current, current->l, val) ||
-           _hidden_deleteValue(current, current->r, val);
+    return h_deleteValue(current, current->l, val) ||
+           h_deleteValue(current, current->r, val);
   }
 
-  bool _hidden_checkIf_val_exists(Node<T>* root, T val) {
+  bool h_checkIf_val_exists(Node<T>* root, T val) {
     bool isVal = false;
     (!root) ? isVal = false
             : (root->value == val)
                   ? isVal = true
                   : (root->value > val)
-                        ? isVal = (_hidden_checkIf_val_exists(root->l, val))
-                        : isVal = (_hidden_checkIf_val_exists(root->r, val));
+                        ? isVal = (h_checkIf_val_exists(root->l, val))
+                        : isVal = (h_checkIf_val_exists(root->r, val));
     return isVal;
   }
 
@@ -244,13 +244,13 @@ class BinST {
 
   ~BinST() {
     if (this->_debug)
-      _hidden_destroyBranch(this->_root);
+      h_destroyBranch(this->_root);
   }
 
   BinST(const BinST& another) : _root(nullptr) {
     if (this->_debug)
       std::cout << "[_debug] Invoked:\"Copy Constructor\"" << std::endl;
-    this->_root = _hidden_cloneTree(another._root);
+    this->_root = h_cloneTree(another._root);
   }
 
   BinST(BinST&& another) : _root(nullptr) {
@@ -263,7 +263,7 @@ class BinST {
   BinST& operator=(BinST& another) {
     if (this->_debug)
       std::cout << "[_debug] Invoked:\"Copy Assignment\"" << std::endl;
-    this->_root = _hidden_cloneTree(another._root);
+    this->_root = h_cloneTree(another._root);
     return *this;
   }
 
@@ -277,13 +277,13 @@ class BinST {
 
   void destroyBranch() {
     if (this->_root)
-      this->_hidden_destroyBranch(this->_root);
+      this->h_destroyBranch(this->_root);
     this->_root = nullptr;
   }
 
   void addNode(T val) {
     if (this->_root)
-      this->_hidden_addNode(this->_root, val);
+      this->h_addNode(this->_root, val);
     else
       this->_root = new Node<T>(val);
   }
@@ -291,35 +291,35 @@ class BinST {
   bool empty() { return (this->root == nullptr); }
 
   void print(std::ostream& output = std::cout) {
-    _hidden_printOrder_IN(this->_root, output);
+    h_printOrder_IN(this->_root, output);
   }
 
   void print_PostOrder(std::ostream& output = std::cout) {
-    _hidden_printOrder_POST(this->_root, output);
+    h_printOrder_POST(this->_root, output);
   }
 
   void print_PreOrder(std::ostream& output = std::cout) {
-    _hidden_printOrder_PRE(this->_root, output);
+    h_printOrder_PRE(this->_root, output);
   }
 
   void print_LevelOrder(std::ostream& output = std::cout) {
-    _hidden_printOrder_LEVEL(this->_root, output);
+    h_printOrder_LEVEL(this->_root, output);
   }
 
-  int size() { return _hidden_countNodes(); }
+  int size() { return h_countNodes(); }
 
-  int count_Nodes() { return _hidden_countNodes(this->_root); }
+  int count_Nodes() { return h_countNodes(this->_root); }
 
-  int getHeight() { return _hidden_getHeight(this->_root); }
+  int getHeight() { return h_getHeight(this->_root); }
 
-  void printLongestPath() { _hidden_printLongestPath(this->_root); }
+  void printLongestPath() { h_printLongestPath(this->_root); }
 
   bool deleteValue(T val) {
-    return this->_hidden_deleteValue(nullptr, this->_root, val);
+    return this->h_deleteValue(nullptr, this->_root, val);
   }
 
   bool foundInTree(T val) {
-    return _hidden_checkIf_val_exists(this->_root, val);
+    return h_checkIf_val_exists(this->_root, val);
   }
 
   void debug_on() { this->_debug = true; }
